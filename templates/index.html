@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAG Page Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <div class="brand-mark">R</div>
+        <div>
+          <div class="brand-title">RAG Page Studio</div>
+          <div class="brand-subtitle">HTML generator with curated image picks</div>
+        </div>
+      </div>
+
+      <button class="primary-button sidebar-button" id="new-chat-btn" type="button">New chat</button>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Chats</div>
+        <div id="chat-list" class="chat-list"></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">RAG-driven page builder</div>
+          <h1 id="chat-title">Create or select a chat</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="ghost-button" id="refresh-images-btn" type="button">Refresh images</button>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <div class="panel generator-panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Prompt</div>
+              <div class="panel-subtitle">Describe the page and pick the strongest image before generation.</div>
+            </div>
+          </div>
+
+          <label class="field-label" for="prompt-input">Page prompt</label>
+          <textarea id="prompt-input" class="prompt-input" placeholder="Example: premium fintech landing page with bold hero, KPI strip, trust logos, and clean pricing section"></textarea>
+
+          <div class="action-row">
+            <button class="secondary-button" id="suggest-images-btn" type="button">Find top 3 images</button>
+            <button class="primary-button" id="generate-btn" type="button">Generate page</button>
+          </div>
+
+          <div id="image-status" class="inline-status muted">Image suggestions will appear here.</div>
+
+          <div id="generation-loader" class="generation-loader hidden" aria-live="polite">
+            <div class="generation-orbit">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="generation-copy">
+              <div class="generation-title">Building the page</div>
+              <div class="generation-subtitle">Layout, typography, image strategy, final HTML.</div>
+            </div>
+          </div>
+
+          <div class="image-grid" id="image-grid"></div>
+        </div>
+
+        <div class="panel output-panel">
+          <div class="history-head">
+            <div class="panel-title">History</div>
+            <div class="panel-subtitle">Latest generation stays in view. Scroll up to revisit older pages.</div>
+          </div>
+          <div id="empty-state" class="empty-state">
+            <div class="empty-title">No generations yet</div>
+            <div class="empty-copy">Create a chat, choose an image, and generate a polished page.</div>
+          </div>
+          <div id="message-list" class="message-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="chat-item-template">
+    <button class="chat-item" type="button">
+      <span class="chat-item-main">
+        <span class="chat-name"></span>
+        <span class="chat-meta"></span>
+      </span>
+      <span class="chat-actions">
+        <span class="mini-button rename-chat">Rename</span>
+        <span class="mini-button delete-chat danger">Delete</span>
+      </span>
+    </button>
+  </template>
+
+  <template id="message-card-template">
+    <article class="message-card">
+      <div class="message-user-bubble"></div>
+      <div class="message-card-top">
+        <div>
+          <div class="message-result-title">Generated page</div>
+          <div class="message-time"></div>
+        </div>
+        <div class="message-actions">
+          <button class="mini-button open-message" type="button">Open</button>
+          <button class="mini-button toggle-code" type="button">Code</button>
+        </div>
+      </div>
+      <div class="message-card-body">
+        <div class="message-preview-shell">
+          <div class="message-preview-topbar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="message-preview"></div>
+        </div>
+        <div class="message-side-meta">
+          <div class="message-image-meta"></div>
+        </div>
+      </div>
+      <div class="message-code-shell hidden">
+        <div class="message-code-toolbar">
+          <div class="message-code-title">Generated HTML</div>
+          <button class="mini-button copy-message-code" type="button">Copy</button>
+        </div>
+        <pre class="message-code-block"></pre>
+      </div>
+    </article>
+  </template>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
